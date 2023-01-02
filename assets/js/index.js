@@ -48,8 +48,40 @@ const propiedadesJSON = [
       m: 500
     }
   ];
+const desplegarPropiedades = (qCuartos = "*", minMts = "*", maxMts = "*") => {
+  let propiedadesHtml = document.querySelector(".propiedades");
+  let cantidadPropiedadesDesplegadas = "";
+  let templatePropiedad = "";
+  for (let propiedad of propiedadesJSON) {
+    if ((propiedad.rooms == Number(qCuartos) && propiedad.m >= Number(minMts) && propiedad.m <= Number(maxMts)) || (qCuartos == "*" && minMts == "*" && maxMts == "*")) {
+        templatePropiedad += `  
+              <div class="propiedad">
+                  <div class="img" style="background-image: url('${propiedad.src}')"></div>
+                  <section>
+                      <h5>${propiedad.name}</h5>
+                      <div class="d-flex justify-content-between">
+                          <p>Cuartos: ${propiedad.rooms}</p>
+                          <p>Metros: ${propiedad.m}</p>
+                      </div>
+                      <p class="my-3">${propiedad.description}</p>
+                      <button class="btn btn-info ">Ver más</button>
+                  </section>
+              </div> `;
+        cantidadPropiedadesDesplegadas++;
+    }
+  }
+  propiedadesHtml.innerHTML = templatePropiedad;
+  document.querySelector("#cantidad_propiedades").innerHTML = cantidadPropiedadesDesplegadas;
+}
+const filtrar = () => {
+  const cantidadCuartos = document.querySelector('#cuartos_cantidad').value;
+  const minimoMetros = document.querySelector("#minimo_metros").value;
+  const maximoMetros = document.querySelector("#maximo_metros").value;
+  if (cantidadCuartos && minimoMetros && maximoMetros) {
+    desplegarPropiedades(cantidadCuartos, minimoMetros, maximoMetros);
+  } else {
+    alert("Favor rellenar todos los campos de busqueda.");
+  }
+}
 
-// FUNCION PARA FILTRAR  (CONDICIONALES Y OTRAS FORMAS DE FILTRAR)
-
-
-// 
+desplegarPropiedades();
